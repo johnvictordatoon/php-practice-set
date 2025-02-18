@@ -63,7 +63,10 @@
         <input type="submit" value="Submit">
 
         <?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
+            <br>
             <h3>Counted Words (Frequencies)</h3>
+            <p style="text-align:left;">Sort by frequency: <?php echo htmlspecialchars($_POST['sort']); ?></p>
+            <p style="text-align:left;">Number of words: <?php echo htmlspecialchars($_POST['limit']); ?></p>
             <ul style="text-align:left;">
                 <?php foreach ($word_freq as $word => $frequency): ?>
                     <li><?php echo htmlspecialchars($word) . ': ' . $frequency; ?></li>
