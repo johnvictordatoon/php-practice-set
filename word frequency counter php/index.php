@@ -1,23 +1,40 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $inputText = $_POST['text'];
-    $sortingOrder = $_POST['sort'];
-    $displayLimit = $_POST['limit'];
-
-    $stopwords_common = array("the", "and", "in", "of", "to", "a", "is", "that", "it", "with", "as", "for", "was", "on", "at", "by", "an");
-    $words = str_word_count(strtolower($inputText), 1);
-    $filtered_words = array_diff($words, $stopwords_common);
-    $word_freq = array_count_values($filtered_words);
-
-    if ($sortingOrder === 'asc') {
-        asort($word_freq);
-    }
-    else {
-        arsort($word_freq);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $inputText = $_POST['text'];
+        $sortingOrder = $_POST['sort'];
+        $displayLimit = $_POST['limit'];
+        $word_freq = process_text($inputText, $sortingOrder, $displayLimit);
     }
 
-    $word_freq = array_slice($word_freq, 0, $displayLimit, true);
-}
+    function process_text($text, $sortOrder, $limit) {
+        $stopwords_common = array("the", "and", "in", "of", "to", "a", "is", "that", "it", "with", "as", "for", "was", "on", "at", "by", "an");
+        $words = token_text($text);
+        $filtered_words = filter_stopwords($words, $stopwords_common);
+        $word_freq = calc_wordfreq($filtered_words);
+        $sorted_word_freq = sort_wordfreq($word_freq, $sortOrder);
+        return array_slice($sorted_word_freq, 0, $limit, true);
+    }
+
+    function token_text($text) {
+        return str_word_count(strtolower($text), 1);
+    }
+
+    function filter_stopwords($words, $stopwords) {
+        return array_diff($words, $stopwords);
+    }
+
+    function calc_wordfreq($words) {
+        return array_count_values($words);
+    }
+
+    function sort_wordfreq($word_freq, $sortOrder) {
+        if ($sortOrder === 'asc') {
+            asort($word_freq);
+        } else {
+            arsort($word_freq);
+        }
+        return $word_freq;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -44,15 +61,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="number" id="limit" name="limit" min="1" placeholder="ex: 5" required><br><br>
         
         <input type="submit" value="Submit">
-    </form>
 
-    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
-        <h2>Counted Words (Frequency)</h2>
-        <ul>
-            <?php foreach ($word_freq as $word => $frequency): ?>
-                <li><?php echo htmlspecialchars($word) . ': ' . $frequency; ?></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
+        <?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
+            <h3>Counted Words (Frequencies)</h3>
+            <ul style="text-align:left;">
+                <?php foreach ($word_freq as $word => $frequency): ?>
+                    <li><?php echo htmlspecialchars($word) . ': ' . $frequency; ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </form>
 </body>
 </html>
