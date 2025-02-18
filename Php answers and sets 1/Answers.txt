@@ -1,0 +1,64 @@
+Question 1: What is the output of print_r($person);?
+Person Object
+(
+    [name] => Alice
+    [age] => 25
+)
+Question 2: What is the output of var_dump($person);?
+object(Person)#1 (2) {
+  ["name"]=>
+  string(5) "Alice"
+  ["age"]=>
+  int(25)
+}
+Question 3: What is the output of var_dump($cashOnHand);?
+float(10.5)
+Question 4: What character is used to concatenate strings?
+.
+Question 5: What is the output of echo HOST;?
+localhost
+Question 6: How will you define in PHP the variable Pl with value 3.1416?
+$Pl = 3.1416;
+Question 7: What is the output of echo $numbers[3] + $numbers[4];?
+9
+Question 8: What is the output of echo $colors[3];?
+Notice: Undefined offset: 3
+Question 9: What are the keys in $person array?
+["name", "age"]
+Question 10: In PHP, how will you change the green into white in $colors array?
+$colors[2] = 'white';
+Question 11: What is the output of echo $hex['red'];?
+#f00
+Question 12: What is the output of echo $matrix[1][2];?
+9
+Question 13: What is the output of echo $people[0]['first_name'];?
+Maeve
+Question 14: What is the output of echo $people[2]['email'];?
+jane@gmail,com
+Question 15: What is the output of var_dump($chunkedArray);?
+Code
+$fruits = ['apple', 'banana', 'orange', 'Blueberry','Pineapple'];
+$chunkedArray = array_chunk($fruits, 2);
+var_dump($chunkedArray);
+Answer
+array(3) {
+  [0]=>
+  array(2) {
+    [0]=>
+    string(5) "apple"
+    [1]=>
+    string(6) "banana"
+  }
+  [1]=>
+  array(2) {
+    [0]=>
+    string(6) "orange"
+    [1]=>
+    string(9) "Blueberry"
+  }
+  [2]=>
+  array(1) {
+    [0]=>
+    string(9) "Pineapple"
+  }
+}
